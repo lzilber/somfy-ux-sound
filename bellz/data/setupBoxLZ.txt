@@ -1,0 +1,465 @@
+{
+  "creationTime": 1491835289000,
+  "lastUpdateTime": 1491835289000,
+  "id": "SETUP-0123-4567-8910",
+  "location": {
+    "creationTime": 1491835289000,
+    "lastUpdateTime": 1503924206000,
+    "city": "Annecy",
+    "country": "France",
+    "postalCode": "74000",
+    "addressLine1": "Somfy ",
+    "addressLine2": "",
+    "timezone": "Europe/Paris",
+    "longitude": 6.1157,
+    "latitude": 45.9345,
+    "twilightMode": 2,
+    "twilightAngle": "CIVIL",
+    "twilightCity": "paris",
+    "summerSolsticeDuskMinutes": 1290,
+    "winterSolsticeDuskMinutes": 990,
+    "twilightOffsetEnabled": false,
+    "dawnOffset": 0,
+    "duskOffset": 0
+  },
+  "gateways": [
+    {
+      "gatewayId": "0123-4567-8910",
+      "type": 53,
+      "subType": 1,
+      "placeOID": "a088af01-9563-4e0a-b4e1-0400a41fc16d",
+      "alive": false,
+      "timeReliable": true,
+      "connectivity": {
+        "status": "DISCONNECTED",
+        "protocolVersion": "23"
+      },
+      "upToDate": true,
+      "syncInProgress": false,
+      "functions": "INTERNET_AUTHORIZATION,SCENARIO_DOWNLOAD,SCENARIO_AUTO_LAUNCHING,SCENARIO_TELECO_LAUNCHING,INTERNET_UPLOAD,INTERNET_UPDATE,TRIGGERS_SENSORS",
+      "mode": "ACTIVE"
+    }
+  ],
+  "devices": [
+    {
+      "creationTime": 1491835731000,
+      "lastUpdateTime": 1491835731000,
+      "label": "Box",
+      "deviceURL": "internal://0123-4567-8910/pod/0",
+      "shortcut": false,
+      "controllableName": "internal:PodMiniComponent",
+      "definition": {
+        "commands": [
+          {
+            "commandName": "getName",
+            "nparams": 0
+          },
+          {
+            "commandName": "activateCalendar",
+            "nparams": 0
+          },
+          {
+            "commandName": "deactivateCalendar",
+            "nparams": 0
+          },
+          {
+            "commandName": "refreshPodMode",
+            "nparams": 0
+          },
+          {
+            "commandName": "setCalendar",
+            "nparams": 1
+          }
+        ],
+        "states": [
+          {
+            "values": [
+              "offline",
+              "online"
+            ],
+            "type": "DiscreteState",
+            "qualifiedName": "core:ConnectivityState"
+          },
+          {
+            "type": "DataState",
+            "qualifiedName": "core:NameState"
+          }
+        ],
+        "dataProperties": [],
+        "widgetName": "Pod",
+        "uiClass": "Pod",
+        "qualifiedName": "internal:PodMiniComponent",
+        "type": "ACTUATOR"
+      },
+      "states": [
+        {
+          "name": "core:NameState",
+          "type": 3,
+          "value": "Box"
+        }
+      ],
+      "attributes": [],
+      "available": true,
+      "enabled": true,
+      "placeOID": "a088af01-9563-4e0a-b4e1-0400a41fc16d",
+      "widget": "Pod",
+      "type": 1,
+      "oid": "82ee45f5-0dce-49a9-a8e9-e67a6e3ea0a7",
+      "uiClass": "Pod"
+    },
+    {
+      "creationTime": 1496998488000,
+      "lastUpdateTime": 1496998488000,
+      "label": "Alarm",
+      "deviceURL": "rtd://0123-4567-8910/777006",
+      "shortcut": false,
+      "controllableName": "rtd:AlarmRTDComponent",
+      "definition": {
+        "commands": [
+          {
+            "commandName": "alarmOff",
+            "nparams": 0
+          },
+          {
+            "commandName": "alarmOn",
+            "nparams": 0
+          },
+          {
+            "commandName": "alarmZoneOn",
+            "nparams": 1
+          },
+          {
+            "commandName": "identify",
+            "nparams": 0
+          }
+        ],
+        "states": [],
+        "dataProperties": [
+          {
+            "value": "5000",
+            "qualifiedName": "core:identifyInterval"
+          }
+        ],
+        "widgetName": "StatelessAlarmController",
+        "uiClass": "Alarm",
+        "qualifiedName": "rtd:AlarmRTDComponent",
+        "type": "ACTUATOR"
+      },
+      "attributes": [],
+      "available": true,
+      "enabled": true,
+      "placeOID": "a088af01-9563-4e0a-b4e1-0400a41fc16d",
+      "widget": "StatelessAlarmController",
+      "type": 1,
+      "oid": "52472600-ea35-4030-91a2-6e97b32d25ab",
+      "uiClass": "Alarm"
+    },
+    {
+      "creationTime": 1493909699000,
+      "lastUpdateTime": 1493909699000,
+      "label": "RTN (0)",
+      "deviceURL": "rtn://0123-4567-8910/0",
+      "shortcut": false,
+      "controllableName": "rtn:RTNStackMasterComponent",
+      "definition": {
+        "commands": [
+          {
+            "commandName": "refreshMD5",
+            "nparams": 0
+          },
+          {
+            "commandName": "refreshProductionDate",
+            "nparams": 0
+          },
+          {
+            "commandName": "refreshResetCause",
+            "nparams": 0
+          },
+          {
+            "commandName": "refreshResetNumber",
+            "nparams": 0
+          },
+          {
+            "commandName": "refreshSerialNumber",
+            "nparams": 0
+          },
+          {
+            "commandName": "setProductionDate",
+            "nparams": 1
+          },
+          {
+            "commandName": "setSerialNumber",
+            "nparams": 1
+          }
+        ],
+        "states": [
+          {
+            "type": "DataState",
+            "qualifiedName": "core:DeviceSerialNumberState"
+          },
+          {
+            "type": "DataState",
+            "qualifiedName": "core:MD5State"
+          },
+          {
+            "type": "DataState",
+            "qualifiedName": "core:ProductionDateState"
+          },
+          {
+            "type": "DataState",
+            "qualifiedName": "core:ResetCauseState"
+          },
+          {
+            "type": "DataState",
+            "qualifiedName": "core:ResetNumberState"
+          }
+        ],
+        "dataProperties": [],
+        "widgetName": "RTNStackMaster",
+        "uiClass": "ProtocolGateway",
+        "qualifiedName": "rtn:RTNStackMasterComponent",
+        "type": "PROTOCOL_GATEWAY"
+      },
+      "states": [],
+      "attributes": [],
+      "available": true,
+      "enabled": true,
+      "placeOID": "a088af01-9563-4e0a-b4e1-0400a41fc16d",
+      "widget": "RTNStackMaster",
+      "type": 5,
+      "oid": "7c904c65-6abd-4fbf-82de-9d2eaef5c6cc",
+      "uiClass": "ProtocolGateway"
+    },
+    {
+      "creationTime": 1495618866000,
+      "lastUpdateTime": 1495618866000,
+      "label": "RTN (1553#1)",
+      "deviceURL": "rtn://0123-4567-8910/1553#1",
+      "shortcut": false,
+      "controllableName": "rtn:SwitchOnOffRTNComponent",
+      "definition": {
+        "commands": [
+          {
+            "commandName": "off",
+            "nparams": 0
+          },
+          {
+            "commandName": "on",
+            "nparams": 0
+          },
+          {
+            "commandName": "onWithTimer",
+            "nparams": 1
+          },
+          {
+            "commandName": "refreshState",
+            "nparams": 0
+          },
+          {
+            "commandName": "setOnOff",
+            "nparams": 1
+          },
+          {
+            "commandName": "toggle",
+            "nparams": 0
+          }
+        ],
+        "states": [
+          {
+            "values": [
+              "off",
+              "on"
+            ],
+            "type": "DiscreteState",
+            "qualifiedName": "core:OnOffState"
+          }
+        ],
+        "dataProperties": [],
+        "widgetName": "StatefulOnOffLight",
+        "uiClass": "Light",
+        "qualifiedName": "rtn:SwitchOnOffRTNComponent",
+        "type": "ACTUATOR"
+      },
+      "states": [
+        {
+          "name": "core:OnOffState",
+          "type": 3,
+          "value": "off"
+        }
+      ],
+      "attributes": [],
+      "available": false,
+      "enabled": true,
+      "placeOID": "a088af01-9563-4e0a-b4e1-0400a41fc16d",
+      "widget": "StatefulOnOffLight",
+      "type": 1,
+      "oid": "e95c0eba-e563-4ca1-94ee-e55d496bf412",
+      "uiClass": "Light"
+    },
+    {
+      "creationTime": 1495618866000,
+      "lastUpdateTime": 1495618866000,
+      "label": "RTN (1553#2)",
+      "deviceURL": "rtn://0123-4567-8910/1553#2",
+      "shortcut": false,
+      "controllableName": "rtn:SwitchOnOffRTNComponent",
+      "definition": {
+        "commands": [
+          {
+            "commandName": "off",
+            "nparams": 0
+          },
+          {
+            "commandName": "on",
+            "nparams": 0
+          },
+          {
+            "commandName": "onWithTimer",
+            "nparams": 1
+          },
+          {
+            "commandName": "refreshState",
+            "nparams": 0
+          },
+          {
+            "commandName": "setOnOff",
+            "nparams": 1
+          },
+          {
+            "commandName": "toggle",
+            "nparams": 0
+          }
+        ],
+        "states": [
+          {
+            "values": [
+              "off",
+              "on"
+            ],
+            "type": "DiscreteState",
+            "qualifiedName": "core:OnOffState"
+          }
+        ],
+        "dataProperties": [],
+        "widgetName": "StatefulOnOffLight",
+        "uiClass": "Light",
+        "qualifiedName": "rtn:SwitchOnOffRTNComponent",
+        "type": "ACTUATOR"
+      },
+      "states": [
+        {
+          "name": "core:OnOffState",
+          "type": 3,
+          "value": "off"
+        }
+      ],
+      "attributes": [],
+      "available": false,
+      "enabled": true,
+      "placeOID": "a088af01-9563-4e0a-b4e1-0400a41fc16d",
+      "widget": "StatefulOnOffLight",
+      "type": 1,
+      "oid": "a10c2e16-824b-4528-8ac0-ddb5054bdb7d",
+      "uiClass": "Light"
+    },
+    {
+      "creationTime": 1500310710000,
+      "lastUpdateTime": 1500310710000,
+      "label": "Pair Of Curtains",
+      "deviceURL": "rts://0123-4567-8910/16766765",
+      "shortcut": false,
+      "controllableName": "rts:DualCurtainRTSComponent",
+      "definition": {
+        "commands": [
+          {
+            "commandName": "close",
+            "nparams": 0
+          },
+          {
+            "commandName": "down",
+            "nparams": 0
+          },
+          {
+            "commandName": "identify",
+            "nparams": 0
+          },
+          {
+            "commandName": "my",
+            "nparams": 0
+          },
+          {
+            "commandName": "open",
+            "nparams": 0
+          },
+          {
+            "commandName": "rest",
+            "nparams": 0
+          },
+          {
+            "commandName": "stop",
+            "nparams": 0
+          },
+          {
+            "commandName": "test",
+            "nparams": 0
+          },
+          {
+            "commandName": "up",
+            "nparams": 0
+          }
+        ],
+        "states": [],
+        "dataProperties": [
+          {
+            "value": "0",
+            "qualifiedName": "core:identifyInterval"
+          }
+        ],
+        "widgetName": "UpDownDualCurtain",
+        "uiClass": "Curtain",
+        "qualifiedName": "rts:DualCurtainRTSComponent",
+        "type": "ACTUATOR"
+      },
+      "attributes": [
+        {
+          "name": "rts:diy",
+          "type": 6,
+          "value": true
+        }
+      ],
+      "available": true,
+      "enabled": true,
+      "placeOID": "b7f1e376-9d6f-4ab1-a0e6-742174cd30d0",
+      "widget": "UpDownDualCurtain",
+      "type": 1,
+      "oid": "ff938fb1-1a1b-4b8a-a8a1-cf23072702ac",
+      "uiClass": "Curtain"
+    }
+  ],
+  "zones": [],
+  "resellerDelegationType": "NEVER",
+  "rootPlace": {
+    "creationTime": 1491835289000,
+    "lastUpdateTime": 1491835289000,
+    "label": "All House",
+    "type": 0,
+    "oid": "a088af01-9563-4e0a-b4e1-0400a41fc16d",
+    "subPlaces": [
+      {
+        "creationTime": 1495530801000,
+        "lastUpdateTime": 1501060837000,
+        "label": "the kitchen",
+        "type": 100,
+        "metadata": "{\"intent\" : \"TaHomaBee\", \"version\" : 1, \"plateform\" : \"iOS\", \"user\" : \"test iOS\", \"internalId\" : \"7c0e0bd4-6c75-45f1-aab7-14a28e1503c0\"}",
+        "oid": "b7f1e376-9d6f-4ab1-a0e6-742174cd30d0",
+        "subPlaces": []
+      }
+    ]
+  },
+  "features": [
+    {
+      "name": "connexoon-rts-window",
+      "source": "GATEWAY_TYPE"
+    }
+  ]
+}
