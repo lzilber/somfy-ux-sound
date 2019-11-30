@@ -17,6 +17,7 @@
 		4DA8AD85236F05F1002CA457 /* Note8.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4DA8AD83236F05F1002CA457 /* Note8.wav */; };
 		4DA8AD87236F0721002CA457 /* Glass.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 4DA8AD86236F0721002CA457 /* Glass.aiff */; };
 		4DCCE2332374830C00330A61 /* LocationEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCE2322374830C00330A61 /* LocationEditor.swift */; };
+		4DDE5C062392FB00007451FC /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4DDE5C052392FB00007451FC /* .travis.yml */; };
 		4DEB1489235F221D00705463 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB1488235F221D00705463 /* AppDelegate.swift */; };
 		4DEB148B235F221D00705463 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB148A235F221D00705463 /* SceneDelegate.swift */; };
 		4DEB148D235F221D00705463 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB148C235F221D00705463 /* ContentView.swift */; };
@@ -60,6 +61,7 @@
 		4DA8AD83236F05F1002CA457 /* Note8.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Note8.wav; sourceTree = "<group>"; };
 		4DA8AD86236F0721002CA457 /* Glass.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Glass.aiff; sourceTree = "<group>"; };
 		4DCCE2322374830C00330A61 /* LocationEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationEditor.swift; sourceTree = "<group>"; };
+		4DDE5C052392FB00007451FC /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .travis.yml; sourceTree = "<group>"; };
 		4DEB1485235F221D00705463 /* bellz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bellz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DEB1488235F221D00705463 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4DEB148A235F221D00705463 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				4DEB1486235F221D00705463 /* Products */,
 				4DEB14AA235F240F00705463 /* LICENSE */,
 				4DEB14AB235F241B00705463 /* README.md */,
+				4DDE5C052392FB00007451FC /* .travis.yml */,
 			);
 			sourceTree = "<group>";
 		};
@@ -304,6 +307,7 @@
 				4DA8AD87236F0721002CA457 /* Glass.aiff in Resources */,
 				4DA8AD85236F05F1002CA457 /* Note8.wav in Resources */,
 				4DEB14C9235F2A0700705463 /* setupBoxLZ.txt in Resources */,
+				4DDE5C062392FB00007451FC /* .travis.yml in Resources */,
 				4DEB1495235F222200705463 /* LaunchScreen.storyboard in Resources */,
 				4DA8AD7B236EC9FC002CA457 /* smw_bossvict_arr.mp3 in Resources */,
 				4DEB1492235F222200705463 /* Preview Assets.xcassets in Resources */,
