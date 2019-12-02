@@ -5,7 +5,7 @@ osx_image: xcode11.2
 
 xcode_project: bellz.xcodeproj
 xcode_scheme: bellz
-xcode_destination: platform=iOS Simulator,name=iPhone 8,OS=13.1
+xcode_destination: platform=iOS Simulator,name=iPhone 8,OS=13.2
 
 branches:
   only:
