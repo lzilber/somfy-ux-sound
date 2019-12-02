@@ -3,8 +3,8 @@ language: swift
 osx_image: xcode11
 
 xcode_project: bellz.xcodeproj
-xcode_scheme: bellzTests
-xcode_destination: platform=iOS Simulator,OS=11.3,name=iPhone X
+xcode_scheme: bellz
+xcode_destination: platform=iOS Simulator,name=iPhone 8,OS=13.0
 
 branches:
   only:

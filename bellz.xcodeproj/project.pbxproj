@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D1E5EAC2395756E0083509C /* EventManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1E5EAB2395756E0083509C /* EventManagerTests.swift */; };
 		4D860B99237FF35A00967ADF /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D860B98237FF35A00967ADF /* EventManager.swift */; };
 		4DA8AD76236E1539002CA457 /* CommandDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8AD75236E1539002CA457 /* CommandDetail.swift */; };
 		4DA8AD7B236EC9FC002CA457 /* smw_bossvict_arr.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4DA8AD7A236EC9FC002CA457 /* smw_bossvict_arr.mp3 */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D1E5EAB2395756E0083509C /* EventManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManagerTests.swift; sourceTree = "<group>"; };
 		4D860B98237FF35A00967ADF /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		4DA8AD75236E1539002CA457 /* CommandDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDetail.swift; sourceTree = "<group>"; };
 		4DA8AD7A236EC9FC002CA457 /* smw_bossvict_arr.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = smw_bossvict_arr.mp3; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				4DEB14A1235F222300705463 /* Info.plist */,
+				4D1E5EAB2395756E0083509C /* EventManagerTests.swift */,
 			);
 			path = bellzTests;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 					};
 					4DEB149A235F222300705463 = {
 						CreatedOnToolsVersion = 11.1;
+						LastSwiftMigration = 1110;
 						TestTargetID = 4DEB1484235F221D00705463;
 					};
 				};
@@ -359,6 +363,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D1E5EAC2395756E0083509C /* EventManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +548,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 94DH6GTD54;
 				INFOPLIST_FILE = bellzTests/Info.plist;
@@ -554,6 +560,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.zebre.bellzTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/bellz.app/bellz";
@@ -565,6 +572,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 94DH6GTD54;
 				INFOPLIST_FILE = bellzTests/Info.plist;
