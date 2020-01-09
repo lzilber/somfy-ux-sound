@@ -56,8 +56,6 @@ struct Login: View {
                     }
                 Section {
                     Button(action: {
-                        // FIXME
-                        // Il doit etre possible de ne passer que des Bindings (login, pwd, url) et pas la session, et c'est le parent qui fait le openSession ?
                         self.userSession.open(username: self.login, password: self.password, serverURL: ServerURL(cloud: self.selectedCloud, server: self.selectedServer))
                         self.isContactingServer = true
                         self.message = "Connecting to the server..."
@@ -81,7 +79,6 @@ struct Login: View {
             }
         }
     }
-    
 }
 
 struct Login_Previews: PreviewProvider {

@@ -13,6 +13,7 @@ struct Home: View {
     @EnvironmentObject var session: Session
     
     @State var showingUserInfo = false
+        
     var userButton: some View {
         Button(action: { self.showingUserInfo.toggle() }) {
             Image(systemName: "person.crop.circle")
@@ -41,7 +42,7 @@ struct Home: View {
             .navigationBarItems(trailing: userButton)
             .sheet(isPresented: $showingUserInfo) {
                 UserInfoFrame(showingUserInfo: self.$showingUserInfo)
-                    .environmentObject(self.session)
+                .environmentObject(self.session)
             }
         }
     }

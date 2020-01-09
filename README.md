@@ -1,6 +1,10 @@
 # somfy-ux-sound
-Testing UX sound feedbacks for Somfy home automation Apps.
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lzilber_somfy-ux-sound&metric=alert_status)](https://sonarcloud.io/dashboard?id=lzilber_somfy-ux-sound)
+
+[![Build Status](https://travis-ci.com/lzilber/somfy-ux-sound.svg?branch=master)](https://travis-ci.com/lzilber/somfy-ux-sound)
+
+Testing UX sound feedbacks for Somfy home automation Apps.
 
 ## Sound UX in Apps
 

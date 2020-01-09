@@ -290,11 +290,15 @@ public struct Setup : JSONCompatible {
     var devices:[Device] = []
     var location:Location = Location() {
         didSet {
-            print("Location updated")
+            print("Location updated") // FIXME Save this
         }
     }
 
     var rawString: String = "?"
+    
+    /** Categories are computed after Setup is loaded, they are not part of the JSON.
+     */
+    var categories: [DeviceCategory] = []
     
     mutating func from(_ jsonData: AnyObject) throws {
 
@@ -328,6 +332,8 @@ public struct Setup : JSONCompatible {
         devices.sort { (d1, d2) -> Bool in
             return d1.deviceURL.localizedStandardCompare(d2.deviceURL) == .orderedAscending
         }
+        
+        self.categories = lookupCategories()
     }
 }
 
@@ -403,6 +409,17 @@ public struct ActionCommand : JSONCompatible {
     init(command: DeviceCommand) {
         name = command.name
         parameters = Array(repeating: "?" as AnyObject, count: command.nparams)
+        buildRawString()
+    }
+    
+    init(command: DeviceCommand, p1: String, p2: String = "") {
+        name = command.name
+        if p1 != "" {
+            parameters.append(p1 as AnyObject)
+            if p2 != "" {
+                parameters.append(p2 as AnyObject)
+            }
+        }
         buildRawString()
     }
     

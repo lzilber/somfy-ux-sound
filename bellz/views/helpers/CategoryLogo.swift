@@ -17,6 +17,8 @@ struct CategoryLogo: View {
     fileprivate func lookupIcon() -> Image {
         // FIXME
         switch category.type {
+        case .alarm:
+            return Image(systemName: "bell")
         case .blinds:
             return Image(systemName: "rectangle")
         case .curtain:
@@ -35,8 +37,12 @@ struct CategoryLogo: View {
             return Image(systemName: "keyboard")
         case .switch_onoff:
             return Image(systemName: "power")
+        case .shutter:
+            return Image(systemName: "rectangle.grid.1x2")
         case .technical:
             return Image(systemName: "wrench")
+        case .sensor:
+            return Image(systemName: "message")
         default:
             return Image(systemName: "questionmark.diamond")
         }

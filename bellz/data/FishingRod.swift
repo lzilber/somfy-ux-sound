@@ -61,14 +61,6 @@ class DemoFishingRod: NSObject, FishingRod {
         }
     }
     
-    /*
-     let paths: [Any] = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-     let basePath: String? = (paths.count > 0) ? (paths[0] as? String) : nil
-     let fileName: String = "\(pdfFileName).pdf"
-     let filePath: String = URL(fileURLWithPath: basePath!).appendingPathComponent(fileName).absoluteString
-
- */
-    
     func setup(_ completionHandler: @escaping (Bool, AnyObject?) -> ()?) {
         // Load JSon from file
         let jsonData = try? Data(contentsOf: setupURL!)

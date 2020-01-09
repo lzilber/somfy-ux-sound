@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 enum TypeOfDevice: String, CaseIterable, Codable, Hashable {
+    case alarm = "Alarm"
     case awning = "Awning"
     case blinds = "Blinds"
     case camera = "Camera"
@@ -26,6 +27,7 @@ enum TypeOfDevice: String, CaseIterable, Codable, Hashable {
     case outlet = "Outlet"
     case pergola = "Pergola"
     case remote_control = "Remote Control"
+    case sensor = "Sensor" // FIXME sensor enum
     case shutter = "Shutter"
     case switch_onoff = "Switch"
     case thermostat = "Thermostat"
@@ -50,6 +52,7 @@ struct DeviceCategory: Hashable, Identifiable { //Codable
     }
 }
 
+let DeviceCategoryAlarm  = DeviceCategory(type: .alarm)
 let DeviceCategoryAwning  = DeviceCategory(type: .awning)
 let DeviceCategoryBlinds  = DeviceCategory(type: .blinds)
 let DeviceCategoryCurtain = DeviceCategory(type: .curtain)
@@ -60,9 +63,9 @@ let DeviceCategoryNetwork = DeviceCategory(type: .network)
 let DeviceCategoryOutlet  = DeviceCategory(type: .outlet)
 let DeviceCategoryOnOff   = DeviceCategory(type: .switch_onoff)
 let DeviceCategoryRemote  = DeviceCategory(type: .remote_control)
+let DeviceCategorySensor = DeviceCategory(type: .sensor)
 let DeviceCategoryShutter = DeviceCategory(type: .shutter)
 let DeviceCategoryTechnical = DeviceCategory(type: .technical)
-
 //
 let DeviceCategoryUnknown = DeviceCategory(type: .unknown)
 
@@ -71,10 +74,13 @@ extension Device {
         return lookupCategory()
     }
     
-    fileprivate func lookupCategory() -> DeviceCategory {
+    func lookupCategory() -> DeviceCategory {
         // FIXME define this in external JSON file mapping uiClass <-> category
         // First look on uiClass
-        if self.uiClass == "ConfigurationComponent" {
+        if self.uiClass == "Alarm" {
+            return DeviceCategoryAlarm
+        }
+        if self.uiClass == "ConfigurationComponent" || self.uiClass == "Dock" {
             return DeviceCategoryTechnical
         }
         if self.uiClass == "Curtain" {
@@ -107,7 +113,10 @@ extension Device {
         if self.uiClass == "RollerShutter" {
             return DeviceCategoryShutter
         }
-        print("DEBUG unknown \(self.uiClass)")
+        if self.uiClass == "OccupancySensor" || self.uiClass == "ContactSensor" {
+            return DeviceCategorySensor
+        }
+        print("INFO unknown \(self.uiClass)")
         
         return DeviceCategoryUnknown
     }
@@ -115,12 +124,8 @@ extension Device {
 
 extension Setup {
     
-    var categories: [DeviceCategory] {
-        print("FIXME lookupCategories CALLED")
-        return lookupCategories()
-    }
-        
-    fileprivate func lookupCategories() -> [DeviceCategory] {
+    func lookupCategories() -> [DeviceCategory] {
+        print("DEBUG lookupCategories called")
         var result = [DeviceCategory]()
         for device in self.devices {
             let deviceCategory = device.category

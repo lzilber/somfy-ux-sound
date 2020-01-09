@@ -16,9 +16,10 @@ struct UserInfoFrame: View {
     @State private var message: String = ""
     @State private var isContactingServer: Bool = false
     @State private var draftLocation: Location = Location()
-    
-    @Environment(\.editMode) var mode
+    @State private var editCancelled = false
 
+    @Environment(\.editMode) var mode
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
@@ -30,20 +31,22 @@ struct UserInfoFrame: View {
                 }
             }
             HStack {
-                Button("Cancel") {
-                    if self.mode?.wrappedValue == .inactive {
-//                        self.showingUserInfo = false
-                    } else {
+                EditButton()
+                Spacer()
+                if self.mode?.wrappedValue == .active {
+                    Button("Cancel") {
+                        self.editCancelled = true
+                        self.draftLocation = self.session.setup.location
                         self.mode?.animation().wrappedValue = .inactive
                     }
                 }
-                Spacer()
-                EditButton()
             }.padding()
             Form {
                 Section(header: Text("Profile").bold()) {
                     Text(session.currentUsername).bold()
-                    Text("Gateway \(session.setup.gateways[0].gatewayId)")
+                    if session.setup.gateways.count > 0 {
+                        Text("Gateway \(session.setup.gateways[0].gatewayId)")
+                    }
                     if session.isDemo {
                         Text("No server, using demo file")
                     } else {
@@ -51,25 +54,49 @@ struct UserInfoFrame: View {
                     }
                 }
             }.frame(height: 170)
-
-            LocationEditor(location: self.$draftLocation)
-                .frame(height: 250)
-                .onAppear {
-                    self.draftLocation = self.session.setup.location
+            if self.mode?.wrappedValue == .inactive {
+                LocationEditor(location: .constant(session.setup.location))
+                    .frame(height: 250)
+            } else {
+                LocationEditor(location: self.$draftLocation)
+                    .frame(height: 250)
+                    .onAppear {
+                        self.draftLocation = self.session.setup.location
+                    }
+                    .onDisappear {
+                        if self.editCancelled == true {
+                            self.editCancelled = false
+                        } else {
+                            self.session.setup.location = self.draftLocation
+                        }
+                    }
             }
-            .onDisappear {
-                // FIXME not called ...
-                self.session.setup.location = self.draftLocation
-            }
-            VStack() {
+            VStack(alignment: .leading) {
                 Toggle(isOn: $session.didShowVictory) {
                     Text("Show Victory")
                 }
                 Toggle(isOn: $session.soundEnabled) {
                     Text("Play sounds")
                 }
+                Button(action: {
+                    // Delay call to allow for presented sheet to be dismissed
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.session.close()
+                    }
+                    self.showingUserInfo.toggle()
+                    self.isContactingServer = true
+                    self.message = "Connecting to the server..."
+                }) {
+                    HStack {
+                        Image(systemName: isContactingServer ? "clock" : "arrow.right.circle")
+                            .imageScale(.large)
+                        Text("Logout")
+                    }
+                }
+
             }.padding()
         }
+        .disabled(isContactingServer)
     }
 }
 

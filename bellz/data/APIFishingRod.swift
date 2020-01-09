@@ -84,7 +84,6 @@ class APIFishingRod: NSObject, URLSessionDelegate, FishingRod {
         let parameters = "userId=\(userId)&userPassword=\(userPassword)"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = parameters.data(using: String.Encoding.utf8)
-        print("DEBUG login \(request)")
         jsonRequest(request) { (success, response, error, json) -> () in
             completionHandler(success, json)
         }

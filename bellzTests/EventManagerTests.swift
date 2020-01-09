@@ -13,6 +13,7 @@ class EventManagerTests: XCTestCase {
 
     var eventManager: EventManager?
     let testRod = DemoFishingRod("setupBoxLZ.txt")
+    let testExecId = "test-execId"
     
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -42,22 +43,22 @@ class EventManagerTests: XCTestCase {
     
     func testSubscribe() {
         eventManager?.start()
-        XCTAssertTrue((eventManager?.subscribe(eventId: "test-execId"))!)
-        XCTAssertFalse((eventManager?.subscribe(eventId: "test-execId"))!)
+        XCTAssertTrue((eventManager?.subscribe(eventId: testExecId))!)
+        XCTAssertFalse((eventManager?.subscribe(eventId: testExecId))!)
         eventManager?.stop()
     }
 
     func testUnsubscribe() {
         eventManager?.start()
-        XCTAssertFalse((eventManager?.unsubscribe(eventId: "test-execId"))!)
-        XCTAssertTrue((eventManager?.subscribe(eventId: "test-execId"))!)
-        XCTAssertTrue((eventManager?.unsubscribe(eventId: "test-execId"))!)
+        XCTAssertFalse((eventManager?.unsubscribe(eventId: testExecId))!)
+        XCTAssertTrue((eventManager?.subscribe(eventId: testExecId))!)
+        XCTAssertTrue((eventManager?.unsubscribe(eventId: testExecId))!)
         eventManager?.stop()
     }
 
     func testUpdate() {
         eventManager?.start()
-        XCTAssertTrue((eventManager?.subscribe(eventId: "test-execId"))!)
+        XCTAssertTrue((eventManager?.subscribe(eventId: testExecId))!)
         XCTAssertTrue((eventManager?.update())!)
         eventManager?.stop()
     }
@@ -68,7 +69,7 @@ class EventManagerTests: XCTestCase {
                    {
                        "timestamp": 1574413248137,
                        "setupOID": "SETUP-0123-4567-8910",
-                       "execId": "test-execId",
+                       "execId": "\(testExecId)",
                        "label": "on on zigbee:OnOffComponent",
                        "metadata": "",
                        "type": 1,
@@ -121,7 +122,7 @@ class EventManagerTests: XCTestCase {
                    {
                        "timestamp": 1574413248137,
                        "setupOID": "SETUP-0123-4567-8910",
-                       "execId": "test-execId",
+                       "execId": "\(testExecId)",
                        "label": "on on zigbee:OnOffComponent",
                        "metadata": "",
                        "type": 1,
@@ -143,24 +144,24 @@ class EventManagerTests: XCTestCase {
         let json = try? JSONSerialization.jsonObject(with: data, options: [])
         let event = ExecutionRegisteredEvent()
         try? event.from(json as AnyObject)
-        XCTAssertTrue(event.execId == "test-execId")
+        XCTAssertTrue(event.execId == testExecId)
     }
     
     func testExecutionStateChangedEvent() {
         let data = """
            {
                "timestamp": 1574413248138,
-               "setupOID": "fe0a4d19-0013-41aa-9d74-558dbda7febe",
-               "execId": "test-execId",
+               "setupOID": "SETUP-0123-4567-8910",
+               "execId": "\(testExecId)",
                "newState": "FAILED",
-               "ownerKey": "fe0a4d19-0013-41aa-9d74-558dbda7febe",
+               "ownerKey": "SETUP-0123-4567-8910",
                "type": 1,
                "subType": 1,
                "oldState": "NOT_TRANSMITTED",
                "timeToNextState": -1,
                "failedCommands": [
                    {
-                       "deviceURL": "zigbee://0401-0187-2511/35318/1#1",
+                       "deviceURL": "zigbee://0123-4567-8910/12345/1#1",
                        "rank": 0,
                        "failureType": "PEER_DOWN"
                    }
@@ -173,6 +174,6 @@ class EventManagerTests: XCTestCase {
         let json = try? JSONSerialization.jsonObject(with: data, options: [])
         let event = ExecutionStateChangedEvent()
         try? event.from(json as AnyObject)
-        XCTAssertTrue(event.execId == "test-execId")
+        XCTAssertTrue(event.execId == testExecId, "Expected \(testExecId), got \(event.execId)")
     }
 }

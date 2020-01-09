@@ -12,6 +12,7 @@ open class Session : ObservableObject {
     
     static let loginSuccess = Notification.Name("LoginSuccess")
     static let loginFailed  = Notification.Name("LoginFailed")
+    static let logout  = Notification.Name("SessionLogout")
     static let setupUpdated = Notification.Name("SetupUpdated")
     static let executeActionGroup = Notification.Name("executeActionGroup")
 
@@ -94,10 +95,10 @@ open class Session : ObservableObject {
         if let rod = self.rod {
             rod.logout({ (success, result) -> () in
                 if success {
+                    NotificationCenter.default.post(name: Session.logout, object: self)
+                    self.flush()
                     self.currentUsername = ""
                     self.authenticated = false
-                    self.flush()
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "SessionLogout"), object: self)
                 } else {
                     print("WARNING logout failed: ")
                     print(result ?? "result unavailable")
@@ -109,6 +110,7 @@ open class Session : ObservableObject {
     }
     
     open func flush() {
+        print("INFO Session flushed")
         self.setup = Setup()
         self.actionGroups = []
         //NotificationCenter.default.post(name: Notification.Name(rawValue: "SessionSetupUpdated"), object: self)
@@ -137,15 +139,7 @@ open class Session : ObservableObject {
     open func execute(command deviceCommand: DeviceCommand, on device:Device, p1: String = "", p2: String = "") {
         
         // Build ActionGroup
-        var actionCommand:ActionCommand = ActionCommand(command: deviceCommand)
-        // FIXME move this into convenience initializer
-        if deviceCommand.nparams > 0 {
-            actionCommand.parameters[0] = p1 as AnyObject
-            if deviceCommand.nparams > 1 {
-                actionCommand.parameters[1] = p2 as AnyObject
-            }
-            actionCommand.buildRawString()
-        }
+        let actionCommand:ActionCommand = ActionCommand(command: deviceCommand, p1: p1, p2: p2)
         let action = Action(deviceUrl: device.deviceURL, command: actionCommand)
         let group = ActionGroup("\(deviceCommand.name) on \(device.controllableName)", action:action)
         let data:Data = group.toJson()

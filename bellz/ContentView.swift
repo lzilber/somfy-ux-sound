@@ -11,7 +11,7 @@ import SwiftUI
 struct ContentView: View {
     
     @EnvironmentObject var userSession: Session
-        
+
     var body: some View {
         VStack {
             if userSession.authenticated {
@@ -26,6 +26,5 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().environmentObject(Session.demoSession)
-
     }
 }
