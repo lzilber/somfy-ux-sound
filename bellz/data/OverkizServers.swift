@@ -8,28 +8,11 @@
 
 import Foundation
 
-enum Cloud: String, Identifiable {
-    
-    case Europe, Asia, China, America
-    static let allValues: [Cloud] = [.Asia, .Europe, .China, .America]
-    
-    var id: Cloud {self}  // for SwiftUI ForEach
-
-}
-
-enum Server: String, Identifiable
-{
-    case Dev, Preprod, Prod
-    static let allValues: [Server] = [.Dev, .Preprod, .Prod]
-    
-    var id: Server {self}  // for SwiftUI ForEach
-}
-
 public struct ServerURL {
-    let cloud: Cloud
-    let server: Server
+    var cloud: Cloud
+    var server: Server
     
-    static public let `default` = Self(cloud: .Asia, server: .Dev)
+    static public let initialValue = Self(cloud: .Europe, server: .Prod)
     
     var nickname: String {
         switch cloud {
@@ -67,5 +50,14 @@ public struct ServerURL {
     var description: String {
         return "\(cloud) \(server) [\(nickname)]"
     }
+    
+    enum Cloud: String, CaseIterable {
+        case Europe, Asia, China, America
+    }
+
+    enum Server: String, CaseIterable {
+        case Dev, Preprod, Prod
+    }
+
 }
 

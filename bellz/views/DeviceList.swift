@@ -21,7 +21,8 @@ struct DeviceList: View {
                 }
             }
         }
-        .navigationBarTitle(Text("Devices"))    }
+        .navigationBarTitle(Text("Devices"))
+    }
 }
 
 struct DeviceList_Previews: PreviewProvider {

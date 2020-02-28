@@ -16,9 +16,7 @@ struct Login: View {
     
     @EnvironmentObject var userSession: Session
 
-    @State private var selectedCloud: Cloud = ServerURL.default.cloud
-    @State private var selectedServer: Server = ServerURL.default.server
-    @State var selectedURL: ServerURL = .default
+    @State var selectedURL: ServerURL = .initialValue
     
     let publisher = NotificationCenter.default.publisher(for: Session.loginFailed)
         .map { notification in
@@ -29,34 +27,21 @@ struct Login: View {
 
 
     var body: some View {
+        NavigationView {
+
         VStack(alignment: .leading, spacing: 20) {
             Form {
-                Section(header: Text("Login").bold()) {
+                Section(header: Text("Login")) {
                     TextField("Username", text: $login)
                         .textContentType(.emailAddress)
                         .textFieldStyle(RoundedBorderTextFieldStyle.init())
                     SecureField("Password", text: $password)
                         .textFieldStyle(RoundedBorderTextFieldStyle.init())
-                }
-                Section(header: Text("Server")) {
-                    Picker(selection: $selectedCloud, label: Text("")) {
-                        ForEach(Cloud.allValues) { v in
-                            Text(v.rawValue).tag(v)
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    Picker(selection: $selectedServer, label: Text("")) {
-                        ForEach(Server.allValues) { v in
-                            Text(v.rawValue).tag(v)
-                            
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    Text(verbatim: message).fontWeight(.light).italic()
-                    }
-                Section {
+                    Text(verbatim: message).font(.caption)
+//                }
+//                Section {
                     Button(action: {
-                        self.userSession.open(username: self.login, password: self.password, serverURL: ServerURL(cloud: self.selectedCloud, server: self.selectedServer))
+                        self.userSession.open(username: self.login, password: self.password, serverURL: self.selectedURL)
                         self.isContactingServer = true
                         self.message = "Connecting to the server..."
                     }) {
@@ -66,6 +51,19 @@ struct Login: View {
                             Text("Login")
                         }
                     }
+                    Spacer()
+                }
+                Section(header: Text("Advanced")) {
+                    List {
+                        NavigationLink(
+                            destination: ServerSelector(selectedURL: $selectedURL)
+                        ) {
+                            Text("Server").font(.caption)
+                        }
+                        Button("Demo") {
+                            self.userSession.openDemo()
+                        }.font(.caption)
+                    }
                 }
             }
             .disabled(isContactingServer)
@@ -73,10 +71,7 @@ struct Login: View {
                 self.isContactingServer = false
                 self.message = "An error occured: \(error_msg)."
             }
-            Spacer()
-            Button("Demo") {
-                self.userSession.openDemo()
-            }
+        }
         }
     }
 }

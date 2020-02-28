@@ -21,6 +21,7 @@ protocol FishingRod {
     func action(json:Data, _ completionHandler: @escaping (Bool, AnyObject?)->()?)
     func startEvents(_ completionHandler: @escaping (Bool, AnyObject?)->()?)
     func fetchEvents(listenerId: String, _ completionHandler: @escaping (Bool, AnyObject?)->()?)
+    func stopEvents(listenerId: String, _ completionHandler: @escaping (Bool, AnyObject?) -> ()?)
     func stopEvents(listenerId: String)
 }
 
@@ -83,8 +84,9 @@ class DemoFishingRod: NSObject, FishingRod {
     }
     
     func updateLocation(json: Data, _ completionHandler: @escaping (Bool, AnyObject?) -> ()?) {
-        print("TODO updateLocation")
-
+        print("DEMO updateLocation")
+        // LocationUpdatedEvent
+        completionHandler(true, nil)
     }
     
     func action(json: Data, _ completionHandler: @escaping (Bool, AnyObject?) -> ()?) {
@@ -138,8 +140,14 @@ class DemoFishingRod: NSObject, FishingRod {
         let json = try? JSONSerialization.jsonObject(with: data, options: [])
         completionHandler(true, json as AnyObject?)    }
     
-    func stopEvents(listenerId: String) {
+    func stopEvents(listenerId: String, _ completionHandler: @escaping (Bool, AnyObject?) -> ()?) {
         // Nothing to do
         return
+    }
+    
+    func stopEvents(listenerId: String) {
+        stopEvents(listenerId: listenerId, { (success, json) -> ()? in
+            return
+        })
     }
 }

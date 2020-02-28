@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D086F3923E2F31600EA5E3B /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F3823E2F31600EA5E3B /* ModelTests.swift */; };
+		4D086F3F23E2F36100EA5E3B /* ServerSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F3A23E2F36000EA5E3B /* ServerSelector.swift */; };
+		4D086F4023E2F36100EA5E3B /* GatewayAlive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F3B23E2F36100EA5E3B /* GatewayAlive.swift */; };
+		4D086F4123E2F36100EA5E3B /* CommandRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F3C23E2F36100EA5E3B /* CommandRow.swift */; };
+		4D086F4223E2F36100EA5E3B /* DeviceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F3D23E2F36100EA5E3B /* DeviceRow.swift */; };
+		4D086F4323E2F36100EA5E3B /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F3E23E2F36100EA5E3B /* CategoryRow.swift */; };
+		4D086F4723E2F39B00EA5E3B /* CommandList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F4423E2F39A00EA5E3B /* CommandList.swift */; };
+		4D086F4823E2F39B00EA5E3B /* DeviceTechnicalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F4523E2F39A00EA5E3B /* DeviceTechnicalInfo.swift */; };
+		4D086F4923E2F39B00EA5E3B /* DeviceValueList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F4623E2F39B00EA5E3B /* DeviceValueList.swift */; };
 		4D1E5EAC2395756E0083509C /* EventManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1E5EAB2395756E0083509C /* EventManagerTests.swift */; };
 		4D860B99237FF35A00967ADF /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D860B98237FF35A00967ADF /* EventManager.swift */; };
 		4DA8AD76236E1539002CA457 /* CommandDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8AD75236E1539002CA457 /* CommandDetail.swift */; };
@@ -27,9 +36,7 @@
 		4DEB14BB235F273100705463 /* DeviceDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14AD235F273100705463 /* DeviceDetail.swift */; };
 		4DEB14BC235F273100705463 /* DeviceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14AE235F273100705463 /* DeviceList.swift */; };
 		4DEB14BD235F273100705463 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14AF235F273100705463 /* Home.swift */; };
-		4DEB14BE235F273100705463 /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B0235F273100705463 /* CategoryRow.swift */; };
 		4DEB14BF235F273100705463 /* CategoryLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B2235F273100705463 /* CategoryLogo.swift */; };
-		4DEB14C0235F273100705463 /* DeviceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B3235F273100705463 /* DeviceRow.swift */; };
 		4DEB14C1235F273100705463 /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B5235F273100705463 /* APIModel.swift */; };
 		4DEB14C2235F273100705463 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B6235F273100705463 /* Category.swift */; };
 		4DEB14C3235F273100705463 /* APIFishingRod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B8235F273100705463 /* APIFishingRod.swift */; };
@@ -51,6 +58,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D086F3823E2F31600EA5E3B /* ModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		4D086F3A23E2F36000EA5E3B /* ServerSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerSelector.swift; sourceTree = "<group>"; };
+		4D086F3B23E2F36100EA5E3B /* GatewayAlive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAlive.swift; sourceTree = "<group>"; };
+		4D086F3C23E2F36100EA5E3B /* CommandRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandRow.swift; sourceTree = "<group>"; };
+		4D086F3D23E2F36100EA5E3B /* DeviceRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceRow.swift; sourceTree = "<group>"; };
+		4D086F3E23E2F36100EA5E3B /* CategoryRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRow.swift; sourceTree = "<group>"; };
+		4D086F4423E2F39A00EA5E3B /* CommandList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandList.swift; sourceTree = "<group>"; };
+		4D086F4523E2F39A00EA5E3B /* DeviceTechnicalInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTechnicalInfo.swift; sourceTree = "<group>"; };
+		4D086F4623E2F39B00EA5E3B /* DeviceValueList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceValueList.swift; sourceTree = "<group>"; };
 		4D1E5EAB2395756E0083509C /* EventManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManagerTests.swift; sourceTree = "<group>"; };
 		4D860B98237FF35A00967ADF /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		4DA8AD75236E1539002CA457 /* CommandDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDetail.swift; sourceTree = "<group>"; };
@@ -77,9 +93,7 @@
 		4DEB14AD235F273100705463 /* DeviceDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetail.swift; sourceTree = "<group>"; };
 		4DEB14AE235F273100705463 /* DeviceList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceList.swift; sourceTree = "<group>"; };
 		4DEB14AF235F273100705463 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
-		4DEB14B0235F273100705463 /* CategoryRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRow.swift; sourceTree = "<group>"; };
 		4DEB14B2235F273100705463 /* CategoryLogo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryLogo.swift; sourceTree = "<group>"; };
-		4DEB14B3235F273100705463 /* DeviceRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceRow.swift; sourceTree = "<group>"; };
 		4DEB14B5235F273100705463 /* APIModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
 		4DEB14B6235F273100705463 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		4DEB14B8235F273100705463 /* APIFishingRod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIFishingRod.swift; sourceTree = "<group>"; };
@@ -171,6 +185,7 @@
 			children = (
 				4DEB14A1235F222300705463 /* Info.plist */,
 				4D1E5EAB2395756E0083509C /* EventManagerTests.swift */,
+				4D086F3823E2F31600EA5E3B /* ModelTests.swift */,
 			);
 			path = bellzTests;
 			sourceTree = "<group>";
@@ -183,8 +198,9 @@
 				4DEB14CC235F3CAD00705463 /* Login.swift */,
 				4DEB14AD235F273100705463 /* DeviceDetail.swift */,
 				4DEB14AE235F273100705463 /* DeviceList.swift */,
-				4DEB14B0235F273100705463 /* CategoryRow.swift */,
-				4DEB14B3235F273100705463 /* DeviceRow.swift */,
+				4D086F4423E2F39A00EA5E3B /* CommandList.swift */,
+				4D086F4523E2F39A00EA5E3B /* DeviceTechnicalInfo.swift */,
+				4D086F4623E2F39B00EA5E3B /* DeviceValueList.swift */,
 				4DA8AD75236E1539002CA457 /* CommandDetail.swift */,
 				4DA8AD7E236ED22B002CA457 /* Victory.swift */,
 				4DA8AD80236F051D002CA457 /* UserInfoFrame.swift */,
@@ -195,6 +211,11 @@
 		4DEB14B1235F273100705463 /* helpers */ = {
 			isa = PBXGroup;
 			children = (
+				4D086F3E23E2F36100EA5E3B /* CategoryRow.swift */,
+				4D086F3C23E2F36100EA5E3B /* CommandRow.swift */,
+				4D086F3D23E2F36100EA5E3B /* DeviceRow.swift */,
+				4D086F3B23E2F36100EA5E3B /* GatewayAlive.swift */,
+				4D086F3A23E2F36000EA5E3B /* ServerSelector.swift */,
 				4DEB14B2235F273100705463 /* CategoryLogo.swift */,
 				4DCCE2322374830C00330A61 /* LocationEditor.swift */,
 			);
@@ -330,20 +351,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D086F4023E2F36100EA5E3B /* GatewayAlive.swift in Sources */,
+				4D086F4123E2F36100EA5E3B /* CommandRow.swift in Sources */,
 				4DEB14BC235F273100705463 /* DeviceList.swift in Sources */,
-				4DEB14C0235F273100705463 /* DeviceRow.swift in Sources */,
+				4D086F4723E2F39B00EA5E3B /* CommandList.swift in Sources */,
+				4D086F4823E2F39B00EA5E3B /* DeviceTechnicalInfo.swift in Sources */,
 				4DEB14BB235F273100705463 /* DeviceDetail.swift in Sources */,
 				4DEB1489235F221D00705463 /* AppDelegate.swift in Sources */,
 				4DEB14C1235F273100705463 /* APIModel.swift in Sources */,
 				4DEB14C7235F27BC00705463 /* Session.swift in Sources */,
+				4D086F4223E2F36100EA5E3B /* DeviceRow.swift in Sources */,
 				4DEB148B235F221D00705463 /* SceneDelegate.swift in Sources */,
 				4DEB14BF235F273100705463 /* CategoryLogo.swift in Sources */,
 				4DA8AD7D236ECB58002CA457 /* Jukebox.swift in Sources */,
+				4D086F3F23E2F36100EA5E3B /* ServerSelector.swift in Sources */,
 				4DEB14C5235F273100705463 /* OverkizServers.swift in Sources */,
 				4DA8AD76236E1539002CA457 /* CommandDetail.swift in Sources */,
-				4DEB14BE235F273100705463 /* CategoryRow.swift in Sources */,
+				4D086F4323E2F36100EA5E3B /* CategoryRow.swift in Sources */,
 				4DA8AD81236F051D002CA457 /* UserInfoFrame.swift in Sources */,
 				4DEB14BD235F273100705463 /* Home.swift in Sources */,
+				4D086F4923E2F39B00EA5E3B /* DeviceValueList.swift in Sources */,
 				4DEB14C3235F273100705463 /* APIFishingRod.swift in Sources */,
 				4DEB14C4235F273100705463 /* FishingRod.swift in Sources */,
 				4DEB148D235F221D00705463 /* ContentView.swift in Sources */,
@@ -360,6 +387,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D1E5EAC2395756E0083509C /* EventManagerTests.swift in Sources */,
+				4D086F3923E2F31600EA5E3B /* ModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

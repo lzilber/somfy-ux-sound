@@ -16,7 +16,6 @@ enum JSONCompatibleError: Error {
 
 protocol JSONCompatible {
     mutating func from(_ jsonData: AnyObject) throws
-    var rawString: String { get }
 }
 
 /** Provides fields for display, usually in a tableView cell.
@@ -62,6 +61,12 @@ class JSONUtils {
         }
         return TimeUtils.dateFromTimeIntervalSince1970(dateValue as! Double)
     }
+    
+    // Temporary workaround until JSON Coding / Deconding is refactored
+    static func internalJSONasRawString(_ jsonData: AnyObject) throws -> String {
+        let json = try JSONSerialization.data(withJSONObject: jsonData)
+        return String(data:json, encoding:.utf8)!
+    }
 }
 
 class TimeUtils {
@@ -89,18 +94,15 @@ class TimeUtils {
     }
 }
 
-
 public struct Gateway : JSONCompatible {
     var gatewayId: String = "?"
     var type: Int = 0
     var alive: Bool = false
     var timeReliable: Bool = false
     var mode: String = "?"
-    var rawString: String = "?"
     
     mutating func from(_ jsonData: AnyObject) throws {
         
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -136,8 +138,6 @@ public struct Device : JSONCompatible, Displayable {
     var states:[DeviceStateOrAttribute] = []
     var attributes:[DeviceStateOrAttribute] = []
 
-    var rawString: String = "?"
-
     var title: String {
         return label
     }
@@ -145,8 +145,9 @@ public struct Device : JSONCompatible, Displayable {
         return definition.type
     }
     
+    var category: DeviceCategory = DeviceCategoryUnknown
+
     mutating func from(_ jsonData: AnyObject) throws {
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -187,6 +188,9 @@ public struct Device : JSONCompatible, Displayable {
                 }
             }
         }
+        
+        // Category extension
+        category = lookupCategory()
     }
 }
 
@@ -194,7 +198,6 @@ public struct DeviceStateOrAttribute : JSONCompatible, Displayable {
     var name: String = "?"
     var type: Int = 0
     var value: AnyObject?
-    var rawString: String = "?"
         
     var title: String {
         return name
@@ -212,12 +215,11 @@ public struct DeviceStateOrAttribute : JSONCompatible, Displayable {
         case 10: // JSON
             return "[...json...]" // (value?.description)!
         default:
-            return rawString
+            return "?"
         }
     }
     
     mutating internal func from(_ jsonData: AnyObject) throws {
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -234,15 +236,11 @@ public struct DeviceDefinition : JSONCompatible {
     var widgetName: String = "?"
     var uiClass: String = "?"
     var type: String = "?"
-    var rawString: String = "?"
     
     mutating internal func from(_ jsonData: AnyObject) throws {
-        
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
-        
         for commandData in json["commands"] as! [AnyObject] {
             var c:DeviceCommand = DeviceCommand()
             do {
@@ -261,7 +259,6 @@ public struct DeviceCommand : JSONCompatible, Displayable {
 
     var name: String = "?"
     var nparams = 1
-    var rawString: String = "?"
     
     var title: String {
         return name
@@ -271,8 +268,6 @@ public struct DeviceCommand : JSONCompatible, Displayable {
     }
     
     mutating internal func from(_ jsonData: AnyObject) throws {
-
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -288,13 +283,7 @@ public struct Setup : JSONCompatible {
     
     var gateways:[Gateway] = []
     var devices:[Device] = []
-    var location:Location = Location() {
-        didSet {
-            print("Location updated") // FIXME Save this
-        }
-    }
-
-    var rawString: String = "?"
+    var location:Location = Location() 
     
     /** Categories are computed after Setup is loaded, they are not part of the JSON.
      */
@@ -302,7 +291,6 @@ public struct Setup : JSONCompatible {
     
     mutating func from(_ jsonData: AnyObject) throws {
 
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -357,14 +345,10 @@ public struct Location : JSONCompatible {
     var dawnOffset:Int = 0
     var duskOffset:Int = 0
     
-    var rawString: String = "?"
-
     mutating internal func from(_ jsonData: AnyObject) throws {
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
-        
         try self.creationTime = JSONUtils.timestamp("creationTime", json: json)
         try self.lastUpdateTime = JSONUtils.timestamp("lastUpdateTime", json: json)
         try self.city = JSONUtils.string("city", json: json)
@@ -372,7 +356,6 @@ public struct Location : JSONCompatible {
         try self.postalCode = JSONUtils.string("postalCode", json: json)
         try self.addressLine1 = JSONUtils.string("addressLine1", json: json)
         try self.timezone = JSONUtils.string("timezone", json: json)
-        // TODO use jsonData.value(forKey: "longitude")
         try self.longitude = JSONUtils.float("longitude", json: json)
         try self.latitude = JSONUtils.float("latitude", json: json)
         try self.twilightMode = JSONUtils.int("twilightMode", json: json)
@@ -386,14 +369,14 @@ public struct Location : JSONCompatible {
     }
 
     
-    mutating func buildRawString() {        
+    func buildRawString() -> String {
         let jsonString = "{\"creationTime\": \(TimeUtils.timestampMilliSecs(self.creationTime)), \"lastUpdateTime\": \(TimeUtils.timestampMilliSecs(self.lastUpdateTime)), \"city\": \"\(self.city)\",\"country\": \"\(self.country)\", \"postalCode\": \"\(self.postalCode)\", \"addressLine1\": \"\(self.addressLine1)\", \"timezone\": \"\(self.timezone)\", \"longitude\": \(self.longitude), \"latitude\": \(self.latitude), \"twilightMode\": \(self.twilightMode), \"twilightAngle\": \"\(self.twilightAngle)\", \"twilightCity\": \"\(self.twilightCity)\", \"summerSolsticeDuskMinutes\": \(self.summerSolsticeDuskMinutes), \"winterSolsticeDuskMinutes\": \(self.winterSolsticeDuskMinutes), \"twilightOffsetEnabled\": \(self.twilightOffsetEnabled), \"dawnOffset\": \(self.dawnOffset), \"duskOffset\": \(self.duskOffset) }"
 
-        rawString = jsonString
+        return jsonString
     }
     
     func toJson() -> Data {
-        let json:Data = rawString.data(using: .utf8)!
+        let json:Data = buildRawString().data(using: .utf8)!
         return json
     }
  }
@@ -403,13 +386,14 @@ public struct ActionCommand : JSONCompatible {
     var type: Int = 1
     var name: String = "?"
     var parameters: [AnyObject] = []
-    var rawString: String = "?"
     
-    init() {}
+    init() {
+        // same as the default initializer that the structure would have received if it did not have its own custom initializer below
+    }
+    
     init(command: DeviceCommand) {
         name = command.name
         parameters = Array(repeating: "?" as AnyObject, count: command.nparams)
-        buildRawString()
     }
     
     init(command: DeviceCommand, p1: String, p2: String = "") {
@@ -420,11 +404,9 @@ public struct ActionCommand : JSONCompatible {
                 parameters.append(p2 as AnyObject)
             }
         }
-        buildRawString()
     }
     
     mutating internal func from(_ jsonData: AnyObject) throws {
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -437,7 +419,7 @@ public struct ActionCommand : JSONCompatible {
         self.parameters = json["parameters"] as! [AnyObject]
     }
     
-    mutating func buildRawString() {
+    func buildRawString() -> String {
         // Note: works when removing the type...
 //        var jsonString = "{\"type\": \(self.type), \"name\": \"\(self.name)\", \"parameters\" : ["
         var jsonString = "{\"name\": \"\(self.name)\", \"parameters\" : ["
@@ -450,11 +432,11 @@ public struct ActionCommand : JSONCompatible {
             jsonString.remove(at: index)
         }
         jsonString += "] }"
-        rawString = jsonString
+        return jsonString
     }
     
     func toJson() -> Data {
-        let json:Data = rawString.data(using: .utf8)!
+        let json:Data = buildRawString().data(using: .utf8)!
         return json
     }
 
@@ -464,22 +446,21 @@ public struct Action : JSONCompatible {
     
     var deviceURL: String = "?"
     var commands: [ActionCommand] = []
-    var rawString: String = "?"
     
-    init() {}
+    init() {
+        // same as the default initializer that the structure would have received if it did not have its own custom initializer below
+    }
+    
     init(deviceUrl url:String, command: ActionCommand) {
         deviceURL = url
         commands.append(command)
-        buildRawString()
     }
     init(deviceUrl url:String, commandList: [ActionCommand]) {
         deviceURL = url
         commands = Array(commandList)
-        buildRawString()
     }
     
     mutating internal func from(_ jsonData: AnyObject) throws {
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -494,21 +475,20 @@ public struct Action : JSONCompatible {
         }
     }
     
-    mutating func buildRawString() {
+    func buildRawString() -> String{
         var jsonString = "{\"deviceURL\": \"\(self.deviceURL)\", \"commands\" : ["
         for command in self.commands {
-            jsonString += "\(command.rawString),"
+            jsonString += "\(command.buildRawString()),"
         }
         // remove extra ","
         let index = jsonString.index(before: jsonString.endIndex)
         jsonString.remove(at: index)
-        
         jsonString += "] }"
-        rawString = jsonString
+        return jsonString
     }
     
     func toJson() -> Data {
-        let json:Data = rawString.data(using: .utf8)!
+        let json:Data = buildRawString().data(using: .utf8)!
         return json
     }
 }
@@ -517,31 +497,28 @@ public struct ActionGroup : JSONCompatible, Displayable {
     var label: String = "?"
     var metadata: String = "?"
     var actions: [Action] = []
-    var rawString: String = "?"
 
     var title: String {
         return label
     }
     var detail: String {
-        return rawString
+        return buildRawString()
     }
     
-    //        let group = ActionGroup(label:"\(deviceCommand!.name) on \(device!.controllableName)", action:action)
-    init() {}
+    init() {
+        // same as the default initializer that the structure would have received if it did not have its own custom initializer below
+    }
+    
     init(_ label:String, action: Action) {
         self.label = label
         actions.append(action)
         metadata = ""
-        buildRawString()
     }
     
     mutating internal func from(_ jsonData: AnyObject) throws {
-        
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
-        
         try self.label = JSONUtils.string("label", json: json)
         try self.metadata = JSONUtils.string("metadata", json: json)
         for actionData in json["actions"] as! [AnyObject] {
@@ -553,21 +530,20 @@ public struct ActionGroup : JSONCompatible, Displayable {
         }
     }
 
-    mutating func buildRawString() {
+    func buildRawString() -> String {
         var jsonString = "{\"label\": \"\(self.label)\", \"metadata\": \"\(self.metadata)\", \"actions\" : ["
         for action in self.actions {
-            jsonString += "\(action.rawString),"
+            jsonString += "\(action.buildRawString()),"
         }
         // remove extra ","
         let index = jsonString.index(before: jsonString.endIndex)
         jsonString.remove(at: index)
-        
         jsonString += "] }"
-        rawString = jsonString
+        return jsonString
     }
     
     func toJson() -> Data {
-        let json:Data = rawString.data(using: .utf8)!
+        let json:Data = buildRawString().data(using: .utf8)!
         return json
     }
 }
@@ -596,13 +572,10 @@ enum EventName: String, CaseIterable, Codable, Hashable {
 }
 
 public class Event : JSONCompatible {
-    var rawString: String = "?"
-
     var name: EventName = .Unknown
     var timestamp = Date()
 
     internal func from(_ jsonData: AnyObject) throws {
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -621,10 +594,9 @@ public class ExecutionRegisteredEvent: Event {
     var subType: Int = 0
     //actions : []
 
-    // FIXME Add function from(Event)
-
+    /** JSONCompatible support
+     */
     internal override func from(_ jsonData: AnyObject) throws {
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -660,10 +632,7 @@ public class ExecutionStateChangedEvent: Event {
         case failed
     }
 
-    // FIXME Add function from(Event)
-
     internal override func from(_ jsonData: AnyObject) throws {
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }
@@ -686,11 +655,8 @@ public class ExecutionStateChangedEvent: Event {
 public class GatewaySynchronizationEvent: Event {
     var gatewayId: String = "?"
     var failureType: String  = "?" // (Enum?)
-
-    // FIXME Add function from(Event)
     
     internal override func from(_ jsonData: AnyObject) throws {
-        self.rawString = jsonData.description
         guard let json = jsonData as? [String: AnyObject] else {
             throw JSONCompatibleError.invalidJSONData
         }

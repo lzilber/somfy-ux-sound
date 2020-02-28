@@ -33,6 +33,10 @@ class APIFishingRod: NSObject, URLSessionDelegate, FishingRod {
     }
     
     // MARK: - Underlying plumbing
+    
+    struct RequestConstants {
+        static let contentTypeHeader = "Content-Type"
+    }
 
     fileprivate func jsonRequest(_ request: URLRequest, completion:@escaping (_ success: Bool, URLResponse?, NSError?, AnyObject?)  -> ()) {
         session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
@@ -45,6 +49,7 @@ class APIFishingRod: NSObject, URLSessionDelegate, FishingRod {
                     completion(true, response, error as NSError?,json as AnyObject?)
                 } else {
                     print("WARNING \(String(describing: request.url)) \((response as! HTTPURLResponse).statusCode)")
+                    print("ERROR \(json ?? "no json content with error message")")
                     completion(false, response, error as NSError?,json as AnyObject?)
                 }
             }
@@ -77,12 +82,18 @@ class APIFishingRod: NSObject, URLSessionDelegate, FishingRod {
         return r
     }
     
+    func jsonRequestURL(_ endPoint:String, _ method:String = "POST") -> URLRequest {
+        var request = requestURL(endPoint, method)
+        request.setValue("application/json", forHTTPHeaderField: RequestConstants.contentTypeHeader)
+        return request
+    }
+    
     // MARK: - Login in and out
     
     func login(user userId:String, password userPassword:String, completionHandler: @escaping (Bool, AnyObject?)->()?) {
         var request = requestURL("/login", "POST")
         let parameters = "userId=\(userId)&userPassword=\(userPassword)"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: RequestConstants.contentTypeHeader)
         request.httpBody = parameters.data(using: String.Encoding.utf8)
         jsonRequest(request) { (success, response, error, json) -> () in
             completionHandler(success, json)
@@ -133,8 +144,10 @@ class APIFishingRod: NSObject, URLSessionDelegate, FishingRod {
     }
     
     func updateLocation(json:Data, _ completionHandler: @escaping (Bool, AnyObject?)->()?) {
+//        var request = jsonRequestURL("/setup/location", "PUT")
         var request = requestURL("/setup/location", "PUT")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
         request.httpBody = json
         jsonRequest(request) { (success, response, error, json) -> () in
             completionHandler(success, json)
@@ -144,8 +157,7 @@ class APIFishingRod: NSObject, URLSessionDelegate, FishingRod {
     // MARK: - Actions
 
     func action(json:Data, _ completionHandler: @escaping (Bool, AnyObject?)->()?) {
-        var request = requestURL("/exec/apply", "POST")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        var request = jsonRequestURL("/exec/apply")
         request.httpBody = json
         jsonRequest(request) { (success, response, error, json) -> () in
             completionHandler(success, json)
@@ -154,24 +166,29 @@ class APIFishingRod: NSObject, URLSessionDelegate, FishingRod {
     
     // MARK: - Events
     func startEvents(_ completionHandler: @escaping (Bool, AnyObject?)->()?) {
-        var request = requestURL("/events/register", "POST")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let request = requestURL("/events/register", "POST")
         jsonRequest(request) { (success, response, error, json) -> () in
             completionHandler(success, json)
         }
     }
 
     func fetchEvents(listenerId: String, _ completionHandler: @escaping (Bool, AnyObject?) -> ()?) {
-        var request = requestURL("/events/\(listenerId)/fetch", "POST")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let request = requestURL("/events/\(listenerId)/fetch", "POST")
+        jsonRequest(request) { (success, response, error, json) -> () in
+            completionHandler(success, json)
+        }
+    }
+    
+    func stopEvents(listenerId: String, _ completionHandler: @escaping (Bool, AnyObject?) -> ()?) {
+        let request = requestURL("/events/\(listenerId)/unregister", "POST")
         jsonRequest(request) { (success, response, error, json) -> () in
             completionHandler(success, json)
         }
     }
     
     func stopEvents(listenerId: String) {
-        var request = requestURL("/events/\(listenerId)/unregister", "POST")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        jsonRequest(request) {_,_,_,_ in }
+        stopEvents(listenerId: listenerId, { (success, json) -> ()? in
+            return
+        })
     }
 }

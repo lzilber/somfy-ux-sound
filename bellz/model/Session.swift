@@ -25,7 +25,7 @@ open class Session : ObservableObject {
     var eventManager:EventManager?
 
     // User Session info
-    @Published var selectedServer: ServerURL = ServerURL.default
+    @Published var selectedServer: ServerURL = ServerURL.initialValue
     @Published var authenticated: Bool = false
     @Published var didShowVictory: Bool = false
     @Published var soundEnabled: Bool = false{
@@ -50,7 +50,7 @@ open class Session : ObservableObject {
     } ()
 
     // MARK: - API
-    public func open(username: String, password: String, serverURL: ServerURL = .default) {
+    public func open(username: String, password: String, serverURL: ServerURL = .initialValue) {
 
         selectedServer = serverURL
         self.rod = APIFishingRod(selectedServer.url, trusted: false)
@@ -136,6 +136,18 @@ open class Session : ObservableObject {
         }
     }
     
+    open func saveLocation() {
+        guard (self.rod != nil) else {
+            return
+        }
+        let data:Data = setup.location.toJson()
+        self.rod!.updateLocation(json: data) { (success, result) -> () in
+            if success {
+                print("DEBUG saveLocation success!")
+            }
+        }
+    }
+    
     open func execute(command deviceCommand: DeviceCommand, on device:Device, p1: String = "", p2: String = "") {
         
         // Build ActionGroup
@@ -185,12 +197,8 @@ open class Session : ObservableObject {
                 try self.setup.from(jsonData!)
                 // print("DEBUG Setup loaded...")
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "SessionSetupUpdated"), object: self)
-            } catch JSONCompatibleError.invalidJSONData {
-                print("ERROR Failed to load setup (invalidJSONData)")
-            } catch JSONCompatibleError.invalidField(let field) {
-                print("ERROR Failed to load setup (invalid field \(field))")
-            } catch JSONCompatibleError.missingField(let field) {
-                print("ERROR Failed to load setup (missing field \(field))")
+            } catch let e as JSONCompatibleError {
+                self.handleJSONError(e)
             } catch {
                 print("ERROR Failed to load setup")
             }
@@ -205,15 +213,22 @@ open class Session : ObservableObject {
                         self.actionGroups.append(ag)
                     }
                 }
-            } catch JSONCompatibleError.invalidJSONData {
-                print("ERROR Failed to load setup (invalidJSONData)")
-            } catch JSONCompatibleError.invalidField(let field) {
-                print("ERROR Failed to load setup (invalid field \(field))")
-            } catch JSONCompatibleError.missingField(let field) {
-                print("ERROR Failed to load setup (missing field \(field))")
+            } catch let e as JSONCompatibleError {
+                self.handleJSONError(e)
             } catch {
-                print("ERROR Failed to load setup")
+                print("ERROR Failed to load actionGroups")
             }
+        }
+    }
+    
+    private func handleJSONError(_ error: JSONCompatibleError) {
+        switch error {
+        case .invalidJSONData:
+            print("ERROR Failed to load json (invalid data)")
+        case .invalidField(let field):
+            print("ERROR Failed to load json (invalid field \(field))")
+        case .missingField(let field):
+            print("ERROR Failed to load json (missing field \(field))")
         }
     }
 }

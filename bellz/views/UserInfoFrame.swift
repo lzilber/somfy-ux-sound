@@ -15,14 +15,15 @@ struct UserInfoFrame: View {
 
     @State private var message: String = ""
     @State private var isContactingServer: Bool = false
-    @State private var draftLocation: Location = Location()
-    @State private var editCancelled = false
-
-    @Environment(\.editMode) var mode
     
     var body: some View {
+        NavigationView {
+
         VStack(alignment: .leading, spacing: 0) {
             HStack {
+                if session.setup.gateways.count > 0 {
+                    GatewayAlive(gateway: session.setup.gateways[0])
+                }
                 Spacer()
                 Button(action: { self.showingUserInfo.toggle() }) {
                     Image(systemName: "person.crop.circle")
@@ -30,47 +31,54 @@ struct UserInfoFrame: View {
                         .padding()
                 }
             }
-            HStack {
-                EditButton()
-                Spacer()
-                if self.mode?.wrappedValue == .active {
-                    Button("Cancel") {
-                        self.editCancelled = true
-                        self.draftLocation = self.session.setup.location
-                        self.mode?.animation().wrappedValue = .inactive
-                    }
-                }
-            }.padding()
             Form {
-                Section(header: Text("Profile").bold()) {
-                    Text(session.currentUsername).bold()
+                Section(header: Text("Profile")) {
+                    HStack {
+                        Text("User")
+                        Spacer()
+                        Text(session.currentUsername)
+                    }
                     if session.setup.gateways.count > 0 {
-                        Text("Gateway \(session.setup.gateways[0].gatewayId)")
+                        HStack {
+                            Text("Gateway")
+                            Spacer()
+                            Text(session.setup.gateways[0].gatewayId)
+                        }
                     }
                     if session.isDemo {
                         Text("No server, using demo file")
                     } else {
-                        Text("Server \(session.selectedServer.description)")
-                    }
-                }
-            }.frame(height: 170)
-            if self.mode?.wrappedValue == .inactive {
-                LocationEditor(location: .constant(session.setup.location))
-                    .frame(height: 250)
-            } else {
-                LocationEditor(location: self.$draftLocation)
-                    .frame(height: 250)
-                    .onAppear {
-                        self.draftLocation = self.session.setup.location
-                    }
-                    .onDisappear {
-                        if self.editCancelled == true {
-                            self.editCancelled = false
-                        } else {
-                            self.session.setup.location = self.draftLocation
+                        HStack {
+                            Text("Server")
+                            Spacer()
+                            Text(session.selectedServer.description)
                         }
                     }
+                    NavigationLink(
+                        destination: LocationEditor(location: $session.setup.location)
+                    ) {
+                        Text("Location (\(session.setup.location.city)...)")
+                    }
+                }
             }
+            //.frame(height: 170)
+//            if self.mode?.wrappedValue == .inactive {
+//                LocationEditor(location: .constant(session.setup.location))
+//                    .frame(height: 250)
+//            } else {
+//                LocationEditor(location: self.$draftLocation)
+//                    .frame(height: 250)
+//                    .onAppear {
+//                        self.draftLocation = self.session.setup.location
+//                    }
+//                    .onDisappear {
+//                        if self.editCancelled == true {
+//                            self.editCancelled = false
+//                        } else {
+//                            self.session.setup.location = self.draftLocation
+//                        }
+//                    }
+//            }
             VStack(alignment: .leading) {
                 Toggle(isOn: $session.didShowVictory) {
                     Text("Show Victory")
@@ -78,6 +86,7 @@ struct UserInfoFrame: View {
                 Toggle(isOn: $session.soundEnabled) {
                     Text("Play sounds")
                 }
+                Spacer()
                 Button(action: {
                     // Delay call to allow for presented sheet to be dismissed
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -97,6 +106,7 @@ struct UserInfoFrame: View {
             }.padding()
         }
         .disabled(isContactingServer)
+    }
     }
 }
 

@@ -39,8 +39,10 @@ enum TypeOfDevice: String, CaseIterable, Codable, Hashable {
 struct DeviceCategory: Hashable, Identifiable { //Codable
     let id: String
     let type: TypeOfDevice
-    var name : String // FIXME Localize
-    
+    var name : String // TODO Localize
+    var shortcuts: [String]?
+    var valuesOfInterest: [String]?
+
     init(id: String, type: TypeOfDevice) {
         self.id = id
         self.type = type
@@ -50,75 +52,100 @@ struct DeviceCategory: Hashable, Identifiable { //Codable
     init(type: TypeOfDevice) {
         self.init(id: type.rawValue, type: type)
     }
+
+    init(type: TypeOfDevice, shortcuts: [String], valuesOfInterest: [String]) {
+        self.init(type: type)
+        self.shortcuts = shortcuts
+        self.valuesOfInterest = valuesOfInterest
+    }
 }
 
 let DeviceCategoryAlarm  = DeviceCategory(type: .alarm)
-let DeviceCategoryAwning  = DeviceCategory(type: .awning)
-let DeviceCategoryBlinds  = DeviceCategory(type: .blinds)
-let DeviceCategoryCurtain = DeviceCategory(type: .curtain)
+let DeviceCategoryAwning  = DeviceCategory(type: .awning, shortcuts: ["open", "close"], valuesOfInterest: ["core:ClosureState"])
+let DeviceCategoryBlinds  = DeviceCategory(type: .blinds, shortcuts: ["open", "close"], valuesOfInterest: ["core:ClosureState"])
+let DeviceCategoryCurtain = DeviceCategory(type: .curtain, shortcuts: ["open", "close"], valuesOfInterest: ["core:ClosureState"])
 let DeviceCategoryGateway = DeviceCategory(type: .gateway)
 let DeviceCategoryElectrical = DeviceCategory(type: .electrical)
-let DeviceCategoryLight   = DeviceCategory(type: .light)
+let DeviceCategoryLight   = DeviceCategory(type: .light, shortcuts: ["on", "off"], valuesOfInterest: ["core:OnOffState"])
 let DeviceCategoryNetwork = DeviceCategory(type: .network)
 let DeviceCategoryOutlet  = DeviceCategory(type: .outlet)
-let DeviceCategoryOnOff   = DeviceCategory(type: .switch_onoff)
+let DeviceCategoryOnOff   = DeviceCategory(type: .switch_onoff, shortcuts: ["on", "off"], valuesOfInterest: ["core:OnOffState"])
 let DeviceCategoryRemote  = DeviceCategory(type: .remote_control)
 let DeviceCategorySensor = DeviceCategory(type: .sensor)
-let DeviceCategoryShutter = DeviceCategory(type: .shutter)
+let DeviceCategoryShutter = DeviceCategory(type: .shutter, shortcuts: ["open", "close"], valuesOfInterest: ["core:ClosureState"])
 let DeviceCategoryTechnical = DeviceCategory(type: .technical)
 //
 let DeviceCategoryUnknown = DeviceCategory(type: .unknown)
 
+let categoriesDefinition = """
+[
+    {
+        "id": "Curtain",
+        "type": "Curtain",
+        "shortcuts": [ "open", "close" ]
+    },
+    {
+        "id": "Light",
+        "type": "Light",
+        "shortcuts": [ "on", "off" ]
+    }
+]
+"""
+
 extension Device {
-    var category: DeviceCategory {
-        return lookupCategory()
+
+    func lookupCategory() -> DeviceCategory {
+        print("DEBUG lookupCategory called on \(self.uiClass)")
+        // FIXME define this in external JSON file mapping uiClass <-> category
+        var category = DeviceCategoryUnknown
+        // TODO look in JSon data
+        
+        
+        // First look on uiClass
+        switch self.uiClass {
+        case "Alarm":
+            category = DeviceCategoryAlarm
+        case "ConfigurationComponent", "Dock":
+            category = DeviceCategoryTechnical
+        case "Curtain":
+            category = DeviceCategoryCurtain
+        case "ElectricitySensor":
+            category = DeviceCategoryElectrical
+        case "ExteriorVenetianBlind", "Screen", "VenetianBlind":
+            category = DeviceCategoryBlinds
+        case "IRBlasterController", "RemoteController":
+            category = DeviceCategoryRemote
+        case "Light":
+            category = DeviceCategoryLight
+        case "NetworkComponent":
+            category = DeviceCategoryNetwork
+        case "OnOff":
+            category = DeviceCategoryOnOff
+        case "Plug":
+            category = DeviceCategoryOutlet
+        case "Pod", "ProtocolGateway":
+            category = DeviceCategoryGateway
+        case "RollerShutter":
+            category = DeviceCategoryShutter
+        case "OccupancySensor","ContactSensor":
+            category = DeviceCategorySensor
+        default:
+            print("INFO unknown \(self.uiClass)")
+            category = DeviceCategoryUnknown
+        }
+        return category
     }
     
-    func lookupCategory() -> DeviceCategory {
-        // FIXME define this in external JSON file mapping uiClass <-> category
-        // First look on uiClass
-        if self.uiClass == "Alarm" {
-            return DeviceCategoryAlarm
+    func categoryCommands() -> [DeviceCommand] {
+        var result: [DeviceCommand] = []
+        for command in self.definition.commands {
+            if let deviceShortcuts = self.category.shortcuts {
+                if deviceShortcuts.contains(command.name) {
+                    result.append(command)
+                }
+            }
         }
-        if self.uiClass == "ConfigurationComponent" || self.uiClass == "Dock" {
-            return DeviceCategoryTechnical
-        }
-        if self.uiClass == "Curtain" {
-            return DeviceCategoryCurtain
-        }
-        if self.uiClass == "ElectricitySensor" {
-            return DeviceCategoryElectrical
-        }
-        if self.uiClass == "ExteriorVenetianBlind" || self.uiClass == "Screen" || self.uiClass == "VenetianBlind"{
-            return DeviceCategoryBlinds
-        }
-        if self.uiClass == "IRBlasterController" || self.uiClass == "RemoteController" {
-            return DeviceCategoryRemote
-        }
-        if self.uiClass == "Light" {
-            return DeviceCategoryLight
-        }
-        if self.uiClass == "NetworkComponent" {
-            return DeviceCategoryNetwork
-        }
-        if self.uiClass == "OnOff" {
-            return DeviceCategoryOnOff
-        }
-        if self.uiClass == "Plug" {
-            return DeviceCategoryOutlet
-        }
-        if self.uiClass == "Pod" || self.uiClass == "ProtocolGateway" {
-            return DeviceCategoryGateway
-        }
-        if self.uiClass == "RollerShutter" {
-            return DeviceCategoryShutter
-        }
-        if self.uiClass == "OccupancySensor" || self.uiClass == "ContactSensor" {
-            return DeviceCategorySensor
-        }
-        print("INFO unknown \(self.uiClass)")
-        
-        return DeviceCategoryUnknown
+        return result
     }
 }
 
