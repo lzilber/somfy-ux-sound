@@ -52,9 +52,9 @@ struct CategoryLogo: View {
 struct CategoryLogo_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            CategoryLogo(category: DeviceCategoryBlinds)
-            CategoryLogo(category: DeviceCategoryLight)
-            CategoryLogo(category: DeviceCategoryOutlet)
+            CategoryLogo(category: DeviceCategoryCatalog.instance.lookup(type: .blinds))
+            CategoryLogo(category: DeviceCategoryCatalog.instance.lookup(type: .light))
+            CategoryLogo(category: DeviceCategoryCatalog.instance.lookup(type: .outlet))
         }
             .previewLayout(.fixed(width: 44, height: 44)) 
     }

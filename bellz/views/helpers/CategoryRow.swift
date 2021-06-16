@@ -14,7 +14,7 @@ struct CategoryRow: View {
         HStack {
             CategoryLogo(category: category)
                 .frame(width: 40, height: 40)
-            Text(verbatim: category.name)
+            Text(verbatim: category.name())
             Spacer()
         }
     }
@@ -23,8 +23,8 @@ struct CategoryRow: View {
 struct CategoryRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            CategoryRow(category: DeviceCategoryBlinds)
-            CategoryRow(category: DeviceCategoryOutlet)
+            CategoryRow(category: DeviceCategoryCatalog.instance.lookup(type: .blinds))
+            CategoryRow(category: DeviceCategoryCatalog.instance.lookup(type: .outlet))
         }
         .previewLayout(.fixed(width: 300, height: 44))
     }

@@ -18,6 +18,15 @@
 		4D086F4923E2F39B00EA5E3B /* DeviceValueList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D086F4623E2F39B00EA5E3B /* DeviceValueList.swift */; };
 		4D1E5EAC2395756E0083509C /* EventManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1E5EAB2395756E0083509C /* EventManagerTests.swift */; };
 		4D860B99237FF35A00967ADF /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D860B98237FF35A00967ADF /* EventManager.swift */; };
+		4D872425267A7EE6009892DD /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B6235F273100705463 /* Category.swift */; };
+		4D87242A267A7F7E009892DD /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B5235F273100705463 /* APIModel.swift */; };
+		4D87242D267A7F83009892DD /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14C6235F27BC00705463 /* Session.swift */; };
+		4D872432267A7FA8009892DD /* APIFishingRod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B8235F273100705463 /* APIFishingRod.swift */; };
+		4D872435267A7FAB009892DD /* FishingRod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14B9235F273100705463 /* FishingRod.swift */; };
+		4D872438267A7FB2009892DD /* OverkizServers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB14BA235F273100705463 /* OverkizServers.swift */; };
+		4D87243B267A7FB5009892DD /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D860B98237FF35A00967ADF /* EventManager.swift */; };
+		4D87243E267A7FD2009892DD /* Jukebox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8AD7C236ECB58002CA457 /* Jukebox.swift */; };
+		4D872444267A8D4D009892DD /* device-categories.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D872443267A8D4D009892DD /* device-categories.json */; };
 		4DA8AD76236E1539002CA457 /* CommandDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8AD75236E1539002CA457 /* CommandDetail.swift */; };
 		4DA8AD7B236EC9FC002CA457 /* smw_bossvict_arr.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4DA8AD7A236EC9FC002CA457 /* smw_bossvict_arr.mp3 */; };
 		4DA8AD7D236ECB58002CA457 /* Jukebox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8AD7C236ECB58002CA457 /* Jukebox.swift */; };
@@ -69,6 +78,7 @@
 		4D086F4623E2F39B00EA5E3B /* DeviceValueList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceValueList.swift; sourceTree = "<group>"; };
 		4D1E5EAB2395756E0083509C /* EventManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManagerTests.swift; sourceTree = "<group>"; };
 		4D860B98237FF35A00967ADF /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
+		4D872443267A8D4D009892DD /* device-categories.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "device-categories.json"; sourceTree = "<group>"; };
 		4DA8AD75236E1539002CA457 /* CommandDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDetail.swift; sourceTree = "<group>"; };
 		4DA8AD7A236EC9FC002CA457 /* smw_bossvict_arr.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = smw_bossvict_arr.mp3; sourceTree = "<group>"; };
 		4DA8AD7C236ECB58002CA457 /* Jukebox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jukebox.swift; sourceTree = "<group>"; };
@@ -228,6 +238,7 @@
 				4DEB14C6235F27BC00705463 /* Session.swift */,
 				4DEB14B5235F273100705463 /* APIModel.swift */,
 				4DEB14B6235F273100705463 /* Category.swift */,
+				4D872443267A8D4D009892DD /* device-categories.json */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -289,7 +300,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1110;
-				LastUpgradeCheck = 1110;
+				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = zebre.org;
 				TargetAttributes = {
 					4DEB1484235F221D00705463 = {
@@ -328,6 +339,7 @@
 			files = (
 				4DA8AD87236F0721002CA457 /* Glass.aiff in Resources */,
 				4DA8AD85236F05F1002CA457 /* Note8.wav in Resources */,
+				4D872444267A8D4D009892DD /* device-categories.json in Resources */,
 				4DEB14C9235F2A0700705463 /* setupBoxLZ.txt in Resources */,
 				4DEB1495235F222200705463 /* LaunchScreen.storyboard in Resources */,
 				4DA8AD7B236EC9FC002CA457 /* smw_bossvict_arr.mp3 in Resources */,
@@ -386,8 +398,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D87243B267A7FB5009892DD /* EventManager.swift in Sources */,
+				4D87242D267A7F83009892DD /* Session.swift in Sources */,
+				4D87242A267A7F7E009892DD /* APIModel.swift in Sources */,
 				4D1E5EAC2395756E0083509C /* EventManagerTests.swift in Sources */,
+				4D872438267A7FB2009892DD /* OverkizServers.swift in Sources */,
+				4D872435267A7FAB009892DD /* FishingRod.swift in Sources */,
+				4D87243E267A7FD2009892DD /* Jukebox.swift in Sources */,
+				4D872432267A7FA8009892DD /* APIFishingRod.swift in Sources */,
 				4D086F3923E2F31600EA5E3B /* ModelTests.swift in Sources */,
+				4D872425267A7EE6009892DD /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,6 +459,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -499,6 +520,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

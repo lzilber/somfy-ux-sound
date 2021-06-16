@@ -1,0 +1,86 @@
+[
+    {
+        "id": "alarm",
+        "type": "Alarm",
+        "shortcuts": [],
+        "valuesOfInterest": []
+    },
+    {
+        "id": "awning",
+        "type": "Awning",
+        "shortcuts": [ "open", "close" ],
+        "valuesOfInterest": [ "core:ClosureState" ]
+    },
+    {
+        "id": "blinds",
+        "type": "Blinds",
+        "shortcuts": [ "open", "close" ],
+        "valuesOfInterest": [ "core:ClosureState" ]
+    },
+    {
+        "id": "curtain",
+        "type": "Curtain",
+        "shortcuts": [ "open", "close" ],
+        "valuesOfInterest": [ "core:ClosureState" ]
+    },
+    {
+        "id": "gateway",
+        "type": "Gateway",
+        "shortcuts": [],
+        "valuesOfInterest": []
+    },
+    {
+        "id": "electrical",
+        "type": "Electrical",
+        "shortcuts": [],
+        "valuesOfInterest": []
+    },
+    {
+        "id": "light",
+        "type": "Light",
+        "shortcuts": [ "on", "off" ],
+        "valuesOfInterest": [ "core:OnOffState" ]
+    },
+    {
+        "id": "network",
+        "type": "Network",
+        "shortcuts": [],
+        "valuesOfInterest": []
+    },
+    {
+        "id": "outlet",
+        "type": "Outlet",
+        "shortcuts": [],
+        "valuesOfInterest": []
+    },
+    {
+        "id": "switch_onoff",
+        "type": "Switch",
+        "shortcuts": [ "on", "off" ],
+        "valuesOfInterest": [ "core:OnOffState" ]
+    },
+    {
+        "id": "remote_control",
+        "type": "Remote Control",
+        "shortcuts": [],
+        "valuesOfInterest": []
+    },
+    {
+        "id": "sensor",
+        "type": "Sensor",
+        "shortcuts": [],
+        "valuesOfInterest": []
+    },
+    {
+        "id": "shutter",
+        "type": "Shutter",
+        "shortcuts": [ "open", "close" ],
+        "valuesOfInterest": [ "core:ClosureState" ]
+    },
+    {
+        "id": "technical",
+        "type": "Technical",
+        "shortcuts": [],
+        "valuesOfInterest": []
+    }
+]

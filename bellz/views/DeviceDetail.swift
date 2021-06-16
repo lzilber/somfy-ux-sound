@@ -59,7 +59,7 @@ struct DeviceDetail: View {
             }
         }
         .padding()
-        .navigationBarTitle(Text(device.category.name))
+        .navigationBarTitle(Text(device.category.name()))
         .onReceive(actionPublisher) { (error_msg) in
             if error_msg == "" {
                 if self.session.soundEnabled {

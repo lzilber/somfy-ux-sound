@@ -36,21 +36,73 @@ enum TypeOfDevice: String, CaseIterable, Codable, Hashable {
     case unknown = "Unknown"
 }
 
-struct DeviceCategory: Hashable, Identifiable { //Codable
-    let id: String
-    let type: TypeOfDevice
-    var name : String // TODO Localize
-    var shortcuts: [String]?
-    var valuesOfInterest: [String]?
-
-    init(id: String, type: TypeOfDevice) {
-        self.id = id
-        self.type = type
-        self.name = id
+class DeviceCategoryCatalog {
+    
+    var allCategories:[DeviceCategory] = []
+        
+    static let instance: DeviceCategoryCatalog = {
+        let catalog = DeviceCategoryCatalog()
+        catalog.allCategories = catalog.loadCategoriesFromFile("device-categories.json")
+        return catalog
+    } ()
+    
+    /** Parse a list of DeviceCategory from JSON data.
+     Uses  JSONDecoder. The array is empty if the decoder throws an error.
+     */
+    func loadCategories(json: Data) -> [DeviceCategory] {
+        let decoder = JSONDecoder()
+        do {
+            let categories = try decoder.decode([DeviceCategory].self, from: json)
+            return categories
+        } catch {
+            print("ERROR Failed to load device categories:" + error.localizedDescription )
+            print(error)
+            return []
+        }
     }
     
+    func loadCategoriesFromFile(_ filename: String) -> [DeviceCategory] {
+        let fileparts = filename.components(separatedBy: ".")
+        if let fileURL = Bundle.main.url(forResource: fileparts[0], withExtension: fileparts[1]) {
+            let jsonData = try? Data(contentsOf: fileURL)
+            if let data = jsonData {
+                return loadCategories(json: data)
+            }
+            print("ERROR Failed to load device categories from file:" + filename )
+        }
+        print("ERROR File (Bundle URL) not found:" + filename )
+        return []
+    }
+    
+    func lookup(name: String) -> DeviceCategory {
+        if let typeOfDevice = TypeOfDevice(rawValue: name) {
+            return lookup(type: typeOfDevice)
+        }
+        print("WARNING: no matching type for name:" + name)
+        return DeviceCategoryUnknown
+    }
+    
+    func lookup(type: TypeOfDevice) -> DeviceCategory {
+        for category in allCategories {
+            if category.type == type {
+                return category
+            }
+        }
+        print("WARNING: type not found in allCategories:" + type.rawValue)
+        return DeviceCategoryUnknown
+    }
+}
+
+struct DeviceCategory: Hashable, Identifiable, Codable {
+    
+    let id: String
+    let type: TypeOfDevice
+    var shortcuts: [String]?
+    var valuesOfInterest: [String]?
+        
     init(type: TypeOfDevice) {
-        self.init(id: type.rawValue, type: type)
+        self.id = type.rawValue.lowercased()
+        self.type = type
     }
 
     init(type: TypeOfDevice, shortcuts: [String], valuesOfInterest: [String]) {
@@ -58,77 +110,51 @@ struct DeviceCategory: Hashable, Identifiable { //Codable
         self.shortcuts = shortcuts
         self.valuesOfInterest = valuesOfInterest
     }
+    
+    func name() -> String {
+        return type.rawValue
+    }
 }
 
-let DeviceCategoryAlarm  = DeviceCategory(type: .alarm)
-let DeviceCategoryAwning  = DeviceCategory(type: .awning, shortcuts: ["open", "close"], valuesOfInterest: ["core:ClosureState"])
-let DeviceCategoryBlinds  = DeviceCategory(type: .blinds, shortcuts: ["open", "close"], valuesOfInterest: ["core:ClosureState"])
-let DeviceCategoryCurtain = DeviceCategory(type: .curtain, shortcuts: ["open", "close"], valuesOfInterest: ["core:ClosureState"])
-let DeviceCategoryGateway = DeviceCategory(type: .gateway)
-let DeviceCategoryElectrical = DeviceCategory(type: .electrical)
-let DeviceCategoryLight   = DeviceCategory(type: .light, shortcuts: ["on", "off"], valuesOfInterest: ["core:OnOffState"])
-let DeviceCategoryNetwork = DeviceCategory(type: .network)
-let DeviceCategoryOutlet  = DeviceCategory(type: .outlet)
-let DeviceCategoryOnOff   = DeviceCategory(type: .switch_onoff, shortcuts: ["on", "off"], valuesOfInterest: ["core:OnOffState"])
-let DeviceCategoryRemote  = DeviceCategory(type: .remote_control)
-let DeviceCategorySensor = DeviceCategory(type: .sensor)
-let DeviceCategoryShutter = DeviceCategory(type: .shutter, shortcuts: ["open", "close"], valuesOfInterest: ["core:ClosureState"])
-let DeviceCategoryTechnical = DeviceCategory(type: .technical)
-//
 let DeviceCategoryUnknown = DeviceCategory(type: .unknown)
-
-let categoriesDefinition = """
-[
-    {
-        "id": "Curtain",
-        "type": "Curtain",
-        "shortcuts": [ "open", "close" ]
-    },
-    {
-        "id": "Light",
-        "type": "Light",
-        "shortcuts": [ "on", "off" ]
-    }
-]
-"""
 
 extension Device {
 
     func lookupCategory() -> DeviceCategory {
         print("DEBUG lookupCategory called on \(self.uiClass)")
-        // FIXME define this in external JSON file mapping uiClass <-> category
+        
+        // FIXME add uiClass mapping to JSON catalog?
+
         var category = DeviceCategoryUnknown
-        // TODO look in JSon data
+        let catalog = DeviceCategoryCatalog.instance
+        // First look if uiClass matches a type
+        category = catalog.lookup(name: self.uiClass)
+        if category != DeviceCategoryUnknown {
+            return category
+        }
         
-        
-        // First look on uiClass
+        // If unknown, look for specific cases
         switch self.uiClass {
-        case "Alarm":
-            category = DeviceCategoryAlarm
         case "ConfigurationComponent", "Dock":
-            category = DeviceCategoryTechnical
-        case "Curtain":
-            category = DeviceCategoryCurtain
+            category = catalog.lookup(type: TypeOfDevice.technical)
         case "ElectricitySensor":
-            category = DeviceCategoryElectrical
+            category = catalog.lookup(type: TypeOfDevice.electrical)
         case "ExteriorVenetianBlind", "Screen", "VenetianBlind":
-            category = DeviceCategoryBlinds
+            category = catalog.lookup(type: TypeOfDevice.blinds)
         case "IRBlasterController", "RemoteController":
-            category = DeviceCategoryRemote
-        case "Light":
-            category = DeviceCategoryLight
+            category = catalog.lookup(type: TypeOfDevice.remote_control)
         case "NetworkComponent":
-            category = DeviceCategoryNetwork
+            category = catalog.lookup(type: TypeOfDevice.network)
         case "OnOff":
-            category = DeviceCategoryOnOff
+            category = catalog.lookup(type: TypeOfDevice.switch_onoff)
         case "Plug":
-            category = DeviceCategoryOutlet
+            category = catalog.lookup(type: TypeOfDevice.outlet)
         case "Pod", "ProtocolGateway":
-            category = DeviceCategoryGateway
+            category = catalog.lookup(type: TypeOfDevice.gateway)
         case "RollerShutter":
-            category = DeviceCategoryShutter
+            category = catalog.lookup(type: TypeOfDevice.shutter)
         case "OccupancySensor","ContactSensor":
-            category = DeviceCategorySensor
+            category = catalog.lookup(type: TypeOfDevice.sensor)
         default:
             print("INFO unknown \(self.uiClass)")
             category = DeviceCategoryUnknown

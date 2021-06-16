@@ -217,5 +217,41 @@ class ModelTests: XCTestCase {
         }
 
     }
+    
+    func testDeviceCategories() {
+        let data  = """
+            [
+                {
+                    "id": "curtain",
+                    "type": "Curtain",
+                    "shortcuts": [ "open", "close" ],
+                    "valuesOfInterest": [ "core:ClosureState" ]
+                },
+                {
+                    "id": "light",
+                    "type": "Light",
+                    "shortcuts": [ "on", "off" ],
+                    "valuesOfInterest": [ "core:OnOffState" ]
+                }
+            ]
+            """.data(using: .utf8)!
+        let catalog = DeviceCategoryCatalog.instance
+        let categories = catalog.loadCategories(json: data)
+        XCTAssert(categories.count == 2)
+        let light = categories[1]
+        XCTAssert(light.type == TypeOfDevice.light)
+//        let unknown = catalog.lookup(name: "Alarm")
+//        XCTAssert(unknown == DeviceCategoryUnknown)
+        let incompleteData  = """
+            [
+                {
+                    "type": "Curtain",
+                    "valuesOfInterest": [ "core:ClosureState" ]
+                }
+            ]
+            """.data(using: .utf8)!
+        let emptyCategories = catalog.loadCategories(json: incompleteData)
+        XCTAssert(emptyCategories.count == 0)
+    }
 
 }
